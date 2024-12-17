@@ -29,9 +29,10 @@ CREATE TABLE `customers` (
   `phone` varchar(15) NOT NULL,
   `email` varchar(255) NOT NULL,
   `address` varchar(255) DEFAULT NULL,
+  `middle_name` varchar(255) DEFAULT NULL,
   PRIMARY KEY (`customer_id`),
   UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +41,7 @@ CREATE TABLE `customers` (
 
 LOCK TABLES `customers` WRITE;
 /*!40000 ALTER TABLE `customers` DISABLE KEYS */;
-INSERT INTO `customers` VALUES (1,'Иван','Иванов','89001234567','ivan.ivanov@example.com','ул. Ленина, д. 10'),(2,'Мария','Петрова','89007654321','maria.petrova@example.com','ул. Пушкина, д. 15'),(3,'Алексей','Сидоров','89005557777','alexey.sidorov@example.com','ул. Чехова, д. 20'),(4,'Екатерина','Дмитриева','89004448888','ekaterina.dmitrieva@example.com','ул. Горького, д. 25'),(5,'Дмитрий','Кузнецов','89003339999','dmitry.kuznetsov@example.com','ул. Тургенева, д. 30');
+INSERT INTO `customers` VALUES (1,'Иван','Иванов','89001234567','ivan.ivanov@example.com','ул. Ленина, д. 10','Иванович'),(2,'Мария','Петрова','89007654321','maria.petrova@example.com','ул. Пушкина, д. 15','Алексеевна'),(3,'Алексей','Сидоров','89005557777','alexey.sidorov@example.com','ул. Чехова, д. 20','Александрович'),(4,'Екатерина','Дмитриева','89004448888','ekaterina.dmitrieva@example.com','ул. Горького, д. 25','Ивановна'),(5,'Дмитрий','Кузнецов','89003339999','dmitry.kuznetsov@example.com','ул. Тургенева, д. 30','Иванович'),(6,'Артем','Толстых','+79202044317','ar@mail.ru','Беговая 223','Александрович'),(7,'Никитинский','Юрий','+7 8329213923','yura.vladimirovich@mail.ru','Успенская, 24','Владимирович');
 /*!40000 ALTER TABLE `customers` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -60,7 +61,7 @@ CREATE TABLE `equipment` (
   `quantity` int NOT NULL,
   `status` enum('available','out_of_stock','repair') NOT NULL DEFAULT 'available',
   PRIMARY KEY (`equipment_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -69,7 +70,7 @@ CREATE TABLE `equipment` (
 
 LOCK TABLES `equipment` WRITE;
 /*!40000 ALTER TABLE `equipment` DISABLE KEYS */;
-INSERT INTO `equipment` VALUES (1,'Горный велосипед','Велосипеды','Средний',20.00,10,'available'),(2,'Сноуборд','Зимний спорт','Большой',15.00,5,'available'),(3,'Теннисная ракетка','Ракетки','Стандартный',5.00,20,'available'),(4,'Лыжный комплект','Зимний спорт','Средний',25.00,8,'available'),(5,'Страховочная система','Альпинизм','Регулируемый',10.00,15,'available');
+INSERT INTO `equipment` VALUES (1,'Горный велосипед','Велосипеды','Средний',20.00,10,'available'),(2,'Сноуборд','Зимний спорт','Большой',15.00,5,'available'),(3,'Теннисная ракетка','Ракетки','Стандартный',5.00,20,'available'),(4,'Лыжный комплект','Зимний спорт','Средний',25.00,5,'available'),(5,'Страховочная система','Альпинизм','Регулируемый',10.00,15,'available'),(6,'Тест','Тест','Тест',10.00,1,'available'),(7,'Футбольный мяч','Мячи','Средний',20.00,3,'available');
 /*!40000 ALTER TABLE `equipment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -91,7 +92,7 @@ CREATE TABLE `order_items` (
   KEY `equipment_id` (`equipment_id`),
   CONSTRAINT `order_items_ibfk_1` FOREIGN KEY (`order_id`) REFERENCES `orders` (`order_id`) ON DELETE CASCADE,
   CONSTRAINT `order_items_ibfk_2` FOREIGN KEY (`equipment_id`) REFERENCES `equipment` (`equipment_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -100,7 +101,7 @@ CREATE TABLE `order_items` (
 
 LOCK TABLES `order_items` WRITE;
 /*!40000 ALTER TABLE `order_items` DISABLE KEYS */;
-INSERT INTO `order_items` VALUES (1,1,1,2,40.00),(2,1,2,1,15.00),(3,2,3,3,15.00),(4,3,4,1,25.00),(5,4,5,5,50.00);
+INSERT INTO `order_items` VALUES (3,2,3,3,15.00),(4,3,4,1,25.00),(5,4,5,5,50.00),(6,9,4,3,25.00);
 /*!40000 ALTER TABLE `order_items` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -121,7 +122,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`order_id`),
   KEY `customer_id` (`customer_id`),
   CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`customer_id`) REFERENCES `customers` (`customer_id`) ON DELETE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb3;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb3;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -130,7 +131,7 @@ CREATE TABLE `orders` (
 
 LOCK TABLES `orders` WRITE;
 /*!40000 ALTER TABLE `orders` DISABLE KEYS */;
-INSERT INTO `orders` VALUES (1,1,'2024-12-01 10:00:00','2024-12-05 10:00:00',100.00,'active'),(2,2,'2024-12-02 14:30:00','2024-12-06 14:30:00',75.00,'completed'),(3,3,'2024-12-03 09:00:00','2024-12-04 09:00:00',25.00,'active'),(4,4,'2024-12-04 12:15:00','2024-12-07 12:15:00',50.00,'active'),(5,5,'2024-12-05 16:45:00','2024-12-10 16:45:00',125.00,'active');
+INSERT INTO `orders` VALUES (2,2,'2024-12-02 14:30:00','2024-12-06 14:30:00',75.00,'completed'),(3,3,'2024-12-03 09:00:00','2024-12-04 09:00:00',25.00,'active'),(4,4,'2024-12-04 12:15:00','2024-12-07 12:15:00',50.00,'active'),(5,5,'2024-12-05 16:45:00','2024-12-10 16:45:00',125.00,'active'),(6,1,'2024-12-10 12:32:00','2024-12-14 04:32:00',1000.00,'active'),(8,6,'2024-02-12 12:21:00','2024-02-13 12:21:00',1000.00,'active'),(9,6,'2003-08-20 12:21:00','1221-12-12 21:12:00',1000.00,'active');
 /*!40000 ALTER TABLE `orders` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -159,7 +160,7 @@ CREATE TABLE `payments` (
 
 LOCK TABLES `payments` WRITE;
 /*!40000 ALTER TABLE `payments` DISABLE KEYS */;
-INSERT INTO `payments` VALUES (1,1,'2024-12-01 11:00:00',100.00,'card'),(2,2,'2024-12-02 15:00:00',75.00,'cash'),(3,3,'2024-12-03 10:00:00',25.00,'online'),(4,4,'2024-12-04 13:00:00',50.00,'card'),(5,5,'2024-12-05 17:00:00',125.00,'card');
+INSERT INTO `payments` VALUES (2,2,'2024-12-02 15:00:00',75.00,'cash'),(3,3,'2024-12-03 10:00:00',25.00,'online'),(4,4,'2024-12-04 13:00:00',50.00,'card'),(5,5,'2024-12-05 17:00:00',125.00,'card');
 /*!40000 ALTER TABLE `payments` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -172,4 +173,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-12-10 17:27:58
+-- Dump completed on 2024-12-17 20:04:37
